@@ -1,0 +1,33 @@
+#
+# Chamber Of Commerce Webapp example environment file / variables documentation
+# Rename this to .env if you want to use it or create your own.
+#
+
+# Chamber Of Commerce (CC)
+# ===============================================
+
+## host and port at which the API is reachable
+API_HOST=172.18.0.6
+API_PORT=8001
+
+CC_HOST=172.18.0.7
+CC_PORT=8091
+CC_START_UP_INTERVAL=5000
+CC_SEED=00000000000000000000000000000CC
+CC_DID=BJqX84hzz2MEaDXNK4SLPK
+CC_USER=CC
+CC_PASSWORD=dummy
+CC_WALLET=CCWallet
+CC_WALLET_KEY=dummy
+
+## DETAILS ABOUT AGENT, USED FOR MOBILE APP (CONNECTION DETAILS)
+CC_NAME=Chamber of Commerce
+CC_DESCRIPTION=Chamber of Commerce
+CC_LOGO_URL=http://eit-dev.westeurope.cloudapp.azure.com:8091/img/icons/android-chrome-512x512.png
+
+
+## IF PROOF TEMPLATE WITH THE GIVEN NAME IS NOT FOUND IN AGENT API, IT WILL BE GENERATED
+CC_PROOF_TEMPLATE_NAME=ChamberOfCommerce-IdentityProof
+
+## CURRENT PROOF TEMPLATE USES A ENV VARIABLE FOR THE TRUSTED CREDENTIAL ID
+CC_TRUSTED_CRED_DEF_ID=Gc3HWtzjBuaGyMkSHgomzx:3:CL:41:TAG1

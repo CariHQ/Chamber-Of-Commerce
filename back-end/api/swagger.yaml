@@ -1,0 +1,411 @@
+swagger: '2.0'
+info:
+  description: '# This is the API for the Chamber Of Commerce Webserver'
+  version: '1.0.0'
+  title: 'Chamber of Commerce - API'
+  contact:
+    email: 'arturo.manzaneda.tudela@ing.com'
+basePath: '/api'
+schemes:
+  - 'http'
+consumes:
+  - 'application/json'
+produces:
+  - 'application/json'
+paths:
+  /companies:
+    get:
+      tags:
+        - 'Companies'
+      summary: 'Get all Companies List Information containing ID to see details'
+      operationId: 'getAllCompanies'
+      parameters: []
+      responses:
+        200:
+          description: 'Successful operation'
+          schema:
+            type: 'array'
+            description: 'All Companies general information'
+            items:
+              $ref: '#/definitions/CompanyOverview'
+        500:
+          description: 'Internal Server Error'
+          schema:
+            $ref: '#/definitions/Error'
+      x-swagger-router-controller: 'Companies'
+    post:
+      tags:
+        - 'Companies'
+      summary: 'Register New Company'
+      operationId: 'registerCompany'
+      parameters:
+        - in: 'body'
+          name: 'body'
+          description: 'New Company Fields'
+          required: true
+          schema:
+            $ref: '#/definitions/NewCompany'
+      responses:
+        201:
+          description: 'Created New Company'
+          schema:
+            $ref: '#/definitions/CompanyDetails'
+          headers:
+            Location:
+              type: 'string'
+              format: 'url'
+              description: 'URI to located back the new company'
+        500:
+          description: 'Internal Server Error'
+          schema:
+            $ref: '#/definitions/Error'
+      x-swagger-router-controller: 'Companies'
+  /companies/{ccNumber}:
+    get:
+      tags:
+        - 'Companies'
+      summary: 'Get Company details'
+      operationId: 'getCompanyDetails'
+      parameters:
+        - name: 'ccNumber'
+          in: 'path'
+          description: 'Chamber of Commerce Number, Unique per registration'
+          required: true
+          type: 'string'
+      responses:
+        200:
+          description: 'Successful operation'
+          schema:
+            $ref: '#/definitions/CompanyDetails'
+        500:
+          description: 'Internal Server Error'
+          schema:
+            $ref: '#/definitions/Error'
+      x-swagger-router-controller: 'Companies'
+  /connections:
+    post:
+      tags:
+        - 'Indy'
+      summary: 'Generate Connection Offer for the given user trying to claim company'
+      operationId: 'newConnectionOffer'
+      parameters:
+        - name: 'ccNumber'
+          in: 'query'
+          description: 'CC number from the company to claim'
+          required: true
+          type: 'string'
+        - in: 'body'
+          name: 'body'
+          description: 'Empty body payload'
+          required: false
+          schema:
+            type: 'object'
+      responses:
+        201:
+          description: 'Created New Connection Offer'
+          schema:
+            $ref: '#/definitions/QRCodePayload'
+          headers:
+            Location:
+              type: 'string'
+              format: 'url'
+              description: 'URI to located back the connection offer'
+        500:
+          description: 'Internal Server Error'
+          schema:
+            $ref: '#/definitions/Error'
+      x-swagger-router-controller: 'Indy'
+  /connections/{myDid}:
+    get:
+      tags:
+        - 'Indy'
+      summary: 'Get connection details by my DID'
+      operationId: 'getConnectionDetailsByMyDid'
+      parameters:
+        - name: 'myDid'
+          in: 'path'
+          description: 'DID of the user (shared reference between CC & Node API)'
+          required: true
+          type: 'string'
+      responses:
+        200:
+          description: 'Successful operation'
+          schema:
+            type: 'object'
+            description: 'Connection Status'
+            properties: {}
+        500:
+          description: 'Internal Server Error'
+          schema:
+            $ref: '#/definitions/Error'
+      x-swagger-router-controller: 'Indy'
+  /credentials:
+    get:
+      tags:
+        - 'Indy'
+      summary: 'Get all credentials offers available in Node API for companies'
+      operationId: 'getCredentialsList'
+      parameters: []
+      responses:
+        200:
+          description: 'Successfully '
+          schema:
+            $ref: '#/definitions/CredentialsAvailable'
+        500:
+          description: 'Internal Server Error'
+          schema:
+            $ref: '#/definitions/Error'
+      x-swagger-router-controller: 'Indy'
+    post:
+      tags:
+        - 'Indy'
+      summary: 'Send credential to user'
+      operationId: 'sendCredentials'
+      parameters:
+        - in: 'body'
+          name: 'body'
+          description: ''
+          required: true
+          schema:
+            $ref: '#/definitions/SendCredentials'
+      responses:
+        200:
+          description: "Successfully generated offer and sent (Not ensures the credentials\
+            \ are received neither accepted)"
+        500:
+          description: 'Internal Server Error'
+          schema:
+            $ref: '#/definitions/Error'
+      x-swagger-router-controller: 'Indy'
+  /credentials/{schemaName}/{schemaVersion}/{myDid}:
+    get:
+      tags:
+        - 'Indy'
+      summary: 'Get Company Credentials data mapped to schema keys'
+      operationId: 'getCredentialsBySchema'
+      parameters:
+        - name: 'myDid'
+          in: 'path'
+          description: 'MyDid to connect to the user'
+          required: true
+          type: 'string'
+        - name: 'schemaName'
+          in: 'path'
+          description: 'Credential Schema Name'
+          required: true
+          type: 'string'
+        - name: 'schemaVersion'
+          in: 'path'
+          description: 'Credential Schema Version'
+          required: true
+          type: 'string'
+      responses:
+        200:
+          description: 'Successful operation'
+          schema:
+            type: 'object'
+            description: "Credential Values mapped to the keys from the requested\
+              \ Schema (The Schema needs to be known by the Web application)"
+            properties: {}
+        500:
+          description: 'Internal Server Error'
+          schema:
+            $ref: '#/definitions/Error'
+      x-swagger-router-controller: 'Indy'
+  /requests/proofs:
+    post:
+      tags:
+        - 'Indy'
+      summary: 'Send Proof Request to user/owner'
+      operationId: 'sendProofRequest'
+      parameters:
+        - in: 'body'
+          name: 'body'
+          description: ''
+          required: true
+          schema:
+            $ref: '#/definitions/ProofRequest'
+      responses:
+        200:
+          description: "Successfully generated offer and sent (Not ensures the credentials\
+            \ are received neither accepted)"
+        500:
+          description: 'Internal Server Error'
+          schema:
+            $ref: '#/definitions/Error'
+      x-swagger-router-controller: 'Indy'
+definitions:
+  NewCompany:
+    type: 'object'
+    required:
+      - 'address'
+      - 'location'
+      - 'name'
+      - 'ownerBsn'
+      - 'ownerName'
+      - 'postcode'
+    properties:
+      name:
+        type: 'string'
+      ownerName:
+        type: 'string'
+      ownerBsn:
+        type: 'integer'
+      address:
+        type: 'string'
+      postcode:
+        type: 'string'
+      location:
+        type: 'string'
+    example:
+      address: 'address'
+      ownerName: 'ownerName'
+      name: 'name'
+      postcode: 'postcode'
+      location: 'location'
+      ownerBsn: 'ownerBsn'
+  CompanyOverview:
+    type: 'object'
+    properties:
+      ccNumber:
+        type: 'string'
+      name:
+        type: 'string'
+      registrationDate:
+        type: 'number'
+    example:
+      ccNumber: 33b3d073
+      name: 'ING Groep NV'
+      registrationDate: 1540469694775
+  CompanyDetails:
+    allOf:
+      - $ref: '#/definitions/CompanyOverview'
+      - type: 'object'
+        properties:
+          ownerName:
+            type: 'string'
+            description: 'Name of the Owner'
+          ownerBsn:
+            type: 'integer'
+            description: 'Social Security Number of the Owner/representative'
+          address:
+            type: 'string'
+            description: 'Street Name + Number of the company address'
+          location:
+            type: 'string'
+            description: 'City or Town name where the company is located'
+          postcode:
+            type: 'string'
+            description: 'Postcode number of the company address'
+          establishmentNumber:
+            type: 'string'
+            description: '(Vestigingsnr.) Registred Address/Location Number'
+        example:
+          ownerName: 'Ralph Hamers'
+          ownerBSN: 1000092
+          street: 'Bijlmerplein 888'
+          postcode: '1102MG'
+          location: 'Amsterdam'
+          establishmentNumber: '32940944'
+    example:
+      ccNumber: 33231073
+      name: 'ING Groep NV'
+      firstEntryInRegister: 1540469694775
+      ownerName: 'Ralph Hamers'
+      ownerBSN: 1000092
+      street: 'Bijlmerplein 888'
+      postcode: '1102MG'
+      location: 'Amsterdam'
+      establishmentNumber: '39394455332'
+  Error:
+    type: 'object'
+    properties:
+      message:
+        type: 'string'
+  QRCodePayload:
+    type: 'object'
+    properties:
+      did:
+        type: 'string'
+        description: 'Government DID'
+      verkey:
+        type: 'string'
+        description: 'Government Verkey'
+      baseUrl:
+        type: 'string'
+        description: "Government Base path, expected to be stored by the client using\
+          \ indy API setEndpoint for DID"
+      path:
+        type: 'string'
+        description: 'Resource location for sending the client response'
+      method:
+        type: 'string'
+        description: 'HTTP Method expected for the response of the client'
+      name:
+        type: 'string'
+        description: "Trust Anchor's name, can be used by the client to identify"
+    example:
+      name: 'Government'
+      did: 'D1atq2dTH6j8kRBsjqVurs'
+      verkey: 'UgFbqy3d273UdYL8ztzAtPUgFbqy3d273UdYL8ztzAtP'
+      baseUrl: 'http://localhost:8081/api'
+      path: '/dids/D1atq2dTH6j8kRBsjqVurs'
+      method: 'PUT'
+      token: 'xxxxxx.yyyyyyy.zzzzzz'
+  SendCredentials:
+    type: 'object'
+    required:
+      - 'did'
+    properties:
+      did:
+        type: 'string'
+        description: 'User DID'
+    example:
+      did: 'UgFbqy3d273UdYL8ztzAtP'
+  ProofRequest:
+    type: 'object'
+    required:
+      - 'recipientDid'
+      - 'ccNumber'
+    properties:
+      recipientDid:
+        type: 'string'
+        description: 'User/Owner DID'
+      ccNumber:
+        type: 'string'
+      proofTemplate:
+        type: 'object'
+        description: 'Proof Template Information'
+        properties:
+          name:
+            type: 'string'
+          version:
+            type: 'string'
+    example:
+      recipientDid: 'UgFbqy3d273UdYL8ztzAtP'
+  CredentialsAvailable:
+    type: 'object'
+    properties:
+      name:
+        type: 'string'
+      schema:
+        type: 'string'
+      credentialDefinition:
+        type: 'string'
+      revocation:
+        type: 'boolean'
+      version:
+        type: 'string'
+      status:
+        type: 'string'
+        enum:
+          - 'Unactive'
+          - 'Active'
+          - 'Deprecated'
+    example:
+      name: 'Passport'
+      schema: 'PassportSchemaId:MyTADID'
+      credentialDefinition: 'PassportCredDefId:MyTADID'
+      revocation: true
+      version: '1.0'
+      status: 'Active'
