@@ -1,6 +1,8 @@
 <img src="https://id-chain.github.io/square-logo300x300.png" align="left" height="140px" style="margin-right: 30px;" />
 
-# IdentityChain Chamber Of Commerce Legacy Example
+# IdentityChain </br> Chamber Of Commerce Legacy Example
+
+</br>
 
 ## Run Chamber Of Commerce Webserver & UI application
 
