@@ -212,7 +212,14 @@ exports.sendProofRequest = async function sendProofRequest(recipientDid, ccNumbe
  */
 exports.init = async function init() {
     await createUser();
-    await createSchemaAndCredentialDefinition();
+    try {
+        await createSchemaAndCredentialDefinition();
+    } catch (e) {
+        log.info("Error while creating schema, probably related to a Shutdown of the API without reboot of the ledger.");
+        log.info("Please use the Admin UI portal to create schemas for the Chamber Of Commerce");
+        log.error(e);
+    }
+
     await createProofTemplate();
 };
 
