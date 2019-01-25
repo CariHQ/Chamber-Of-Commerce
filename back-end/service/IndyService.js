@@ -18,7 +18,7 @@ const ccBaseUrl = `http://${process.env.CC_HOST}:${process.env.CC_PORT}`;
 const ccApiUrl = `${ccBaseUrl}/api`;
 
 const axios = require('axios').create({
-    baseURL: `http://${process.env.API_HOST || 'api'}:${process.env.API_PORT || '8000'}/api`,
+    baseURL: `http://${process.env.IDC_API_HOST || 'api'}:${process.env.IDC_API_PORT || '8000'}/api`,
     timeout: process.env.REQUESTS_TIMEOUT || 60000
 });
 

@@ -1,33 +1,80 @@
-#
-# Chamber Of Commerce Webapp example environment file / variables documentation
-# Rename this to .env if you want to use it or create your own.
-#
+##
+##     ________  ________  _____    _____   __
+##    /  _/ __ \/ ____/ / / /   |  /  _/ | / /
+##    / // / / / /   / /_/ / /| |  / //  |/ /
+##  _/ // /_/ / /___/ __  / ___ |_/ // /|  /
+## /___/_____/\____/_/ /_/_/  |_/___/_/ |_/
+##
+##
+## -------> Chamber Of Commerce Legacy Web Server
+##
+## Please copy this file into a new file with name .env,
+## and adjust the following variables to match your environment
+## ↓↓↓↓
 
-# Chamber Of Commerce (CC)
-# ===============================================
+## ------------------------------------------------------------------------------------
+## IEA API Host & Port
+## Default values by NodeJS code: api:8000
+## ↓↓↓↓-------------------------------------------------------------------------------
 
-## host and port at which the API is reachable
-API_HOST=172.18.0.6
-API_PORT=8001
+IDC_API_HOST=172.16.0.100
+IDC_API_PORT=8000
 
-CC_HOST=172.18.0.7
+## ------------------------------------------------------------------------------------
+## Chamber Of Commerce Host & Port
+## Required (no default values)
+## ↓↓↓↓-------------------------------------------------------------------------------
+
+CC_HOST=172.16.0.102
 CC_PORT=8091
-CC_START_UP_INTERVAL=5000
-CC_SEED=00000000000000000000000000000CC
+
+## ------------------------------------------------------------------------------------
+## Chamber Of Commerce DID & Seed
+## Please see test-pool in (Common repository) for more information
+## ↓↓↓↓-------------------------------------------------------------------------------
+
 CC_DID=BJqX84hzz2MEaDXNK4SLPK
+CC_SEED=00000000000000000000000000000Kvk
+
+## ------------------------------------------------------------------------------------
+## Chamber Of Commerce IEA API User & Wallet parameters
+## ↓↓↓↓-------------------------------------------------------------------------------
+
 CC_USER=CC
 CC_PASSWORD=dummy
 CC_WALLET=CCWallet
 CC_WALLET_KEY=dummy
 
-## DETAILS ABOUT AGENT, USED FOR MOBILE APP (CONNECTION DETAILS)
-CC_NAME=Chamber of Commerce
-CC_DESCRIPTION=Chamber of Commerce
-CC_LOGO_URL=http://eit-dev.westeurope.cloudapp.azure.com:8091/img/icons/android-chrome-512x512.png
+## ------------------------------------------------------------------------------------
+## Chamber Of Commerce Extra info used by mobile app (shared in connection offer messages)
+## Default values in NodeJS code (as defined here)
+## ↓↓↓↓-------------------------------------------------------------------------------
 
+GOV_NAME=Chamber Of Commerce
+GOV_DESCRIPTION=Chamber Of Commerce
+GOV_LOGO_URL=http://23.97.243.176:8091/img/icons/android-chrome-512x512.png
+
+
+## ------------------------------------------------------------------------------------
+## Proof Template Details: Name & Trusted Credential Definition
+##
+## Required to know the trusted credential definition.
+## To change it without restart, access the Admin UI portal and modify proof request template
+## ↓↓↓↓-------------------------------------------------------------------------------
 
 ## IF PROOF TEMPLATE WITH THE GIVEN NAME IS NOT FOUND IN AGENT API, IT WILL BE GENERATED
 CC_PROOF_TEMPLATE_NAME=ChamberOfCommerce-IdentityProof
 
 ## CURRENT PROOF TEMPLATE USES A ENV VARIABLE FOR THE TRUSTED CREDENTIAL ID
 CC_TRUSTED_CRED_DEF_ID=Gc3HWtzjBuaGyMkSHgomzx:3:CL:41:TAG1
+
+## ------------------------------------------------------------------------------------
+## Start Up delay (in milliseconds)
+## Used to introduce a delay before interacting with the IEA API
+## This interaction on bootstrap create:
+##  - User & Wallet
+##  - Schema (Passport)
+##  - Credential Definitions & Revocation Registries
+## ↓↓↓↓-------------------------------------------------------------------------------
+
+CC_START_UP_INTERVAL=5000

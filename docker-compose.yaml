@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+    legacy-chamber:
+        build:
+            context: .
+        image: idchain/legacy-chamber
+        container_name: idchain-legacy-chamber
+        ports:
+            - ${CC_PORT-8090}:${CC_PORT-8090}
+        environment:
+            - IDC_API_HOST=${IDC_API_HOST-172.16.0.100}
+            - IDC_API_PORT=${IDC_API_PORT-8000}
+            - CC_HOST=${CC_HOST-172.16.0.102}
+            - CC_PORT=${CC_PORT-8091}
+            - CC_DID=${CC_DID-BJqX84hzz2MEaDXNK4SLPK}
+            - CC_SEED=${CC_SEED-00000000000000000000000000000Kvk}
+            - CC_USER=${CC_USER-CC}
+            - CC_PASSWORD=${CC_PASSWORD-dummy}
+            - CC_WALLET=${CC_WALLET-CCWallet}
+            - CC_WALLET_KEY=${CC_WALLET_KEY-dummy}
+            - CC_NAME
+            - CC_DESCRIPTION
+            - CC_LOGO_URL
+            - CC_START_UP_INTERVAL=${CC_START_UP_INTERVAL-5000}
+            - CC_PROOF_TEMPLATE_NAME=ChamberOfCommerce-IdentityProof
+            - CC_TRUSTED_CRED_DEF_ID
