@@ -165,7 +165,7 @@ exports.sendCredentials = async function(myDid) {
 /**
  * Expose endpoint to allow Node API to retrieve citizen credentials
  *
- * @param {string} myDid - DID used to have a shared reference between Government & Node API
+ * @param {string} myDid - DID used to have a shared reference between Legacy & Node API
  * @param {string} schemaName - Schema Name
  * @param {string} schemaVersion - Schema Name
  * @return {Promise<object>} credentials - Credentials mapped to the schema keys
@@ -183,7 +183,7 @@ exports.getCredentialsBySchema = async function getCredentialsBySchema(myDid, sc
 /**
  * Send Proof Request to User who wants to claim ownership of the company
  *
- * @param {string} recipientDid - DID used to have a shared reference between Government & Node API
+ * @param {string} recipientDid - DID used to have a shared reference between Legacy & Node API
  * @param {string} ccNumber - CC Number of the company to be claimed
  * @return {Promise<object>} Proof Request - Proof Request Details
  **/

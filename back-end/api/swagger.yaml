@@ -327,13 +327,13 @@ definitions:
     properties:
       did:
         type: 'string'
-        description: 'Government DID'
+        description: 'Chamber of Commerce DID'
       verkey:
         type: 'string'
-        description: 'Government Verkey'
+        description: 'Chamber of Commerce Verkey'
       baseUrl:
         type: 'string'
-        description: "Government Base path, expected to be stored by the client using\
+        description: "Chamber of Commerce Base path, expected to be stored by the client using\
           \ indy API setEndpoint for DID"
       path:
         type: 'string'
@@ -345,7 +345,7 @@ definitions:
         type: 'string'
         description: "Trust Anchor's name, can be used by the client to identify"
     example:
-      name: 'Government'
+      name: 'Chamber Of Commerce'
       did: 'D1atq2dTH6j8kRBsjqVurs'
       verkey: 'UgFbqy3d273UdYL8ztzAtPUgFbqy3d273UdYL8ztzAtP'
       baseUrl: 'http://localhost:8081/api'

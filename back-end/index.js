@@ -12,7 +12,7 @@ const jsyaml = require('js-yaml');
 const log = require('./log').logger;
 const initIndy = require('./service/IndyService').init;
 
-// Initialize Government with API Indy Node
+// Initialize Chamber Of Commerce with API Indy Node
 setTimeout(() => {
     initIndy()
         .then(() => log.info('Completed registration successfully'))

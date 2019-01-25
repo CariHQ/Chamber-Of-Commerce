@@ -66,7 +66,7 @@
         computed: {
             ...mapGetters({
                 loading: "isLoading",
-                getGovernmentDid: "getGovernmentDid",
+                getccDid: "getccDid",
                 credentialOffersInfo: "credentialOffersInfo"
             })
         },
@@ -81,9 +81,8 @@
             }),
             send() {
                 if (this.selectedSchema && this.selectedSchema.credDefId) {
-                    console.log(this.selectedSchema);
                     this.sendCredentials({
-                        myDid: this.getGovernmentDid,
+                        myDid: this.getccDid,
                         credDefId: this.selectedSchema.credDefId
                     }).then(() => {
                         this.$store.commit(SHOW_NOTIFICATION, {
