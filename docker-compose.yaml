@@ -7,7 +7,7 @@ services:
         image: idchain/legacy-chamber
         container_name: idchain-legacy-chamber
         ports:
-            - ${CC_PORT-8090}:${CC_PORT-8090}
+            - ${CC_PORT-8091}:${CC_PORT-8091}
         environment:
             - IDC_API_HOST=${IDC_API_HOST-172.16.0.100}
             - IDC_API_PORT=${IDC_API_PORT-8000}
